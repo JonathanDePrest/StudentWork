@@ -1,9 +1,6 @@
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
-  'require.resolve(
-    "react-native/scripts/react_native_pods.rb",
-    {paths: [process.argv[1]]},
-  )', __dir__]).strip
+  'require.resolve("react-native/scripts/react_native_pods.rb", {paths: [process.argv[1]]})', __dir__]).strip
 
 platform :ios, '14.0'
 
@@ -27,7 +24,7 @@ target 'StudentWork' do
     react_native_post_install(
       installer,
       config[:reactNativePath],
-      :mac_catalyst_enabled => false,
+      :mac_catalyst_enabled => false
     )
 
     # ⛏️ Force iOS 14.0 op RNScreens
@@ -39,3 +36,4 @@ target 'StudentWork' do
       end
     end
   end
+end
