@@ -1,0 +1,37 @@
+workflows:
+  react-native-ios:
+    name: React Native iOS Build
+    max_build_duration: 60
+    environment:
+      vars:
+        XCODE_WORKSPACE: "ios/StudentWork.xcworkspace"
+        XCODE_SCHEME: "StudentWork"
+      xcode: 15.2
+      cocoapods: default
+      node: 18.20.2
+    scripts:
+      - name: Install npm dependencies
+        script: |
+          npm install
+      - name: Install CocoaPods dependencies
+        script: |
+          cd ios
+          pod install
+      - name: Build iOS release
+        script: |
+          xcodebuild -workspace "$XCODE_WORKSPACE" \
+                     -scheme "$XCODE_SCHEME" \
+                     -sdk iphoneos \
+                     -configuration Release \
+                     -archivePath $CM_BUILD_DIR/StudentWork.xcarchive \
+                     archive
+          xcodebuild -exportArchive \
+                     -archivePath $CM_BUILD_DIR/StudentWork.xcarchive \
+                     -exportOptionsPlist ios/exportOptions.plist \
+                     -exportPath $CM_BUILD_DIR/build
+    artifacts:
+      - build/**/*.ipa
+    publishing:
+      email:
+        recipients:
+          - jouw@emailadres.com
