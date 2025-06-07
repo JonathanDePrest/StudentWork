@@ -1,8 +1,10 @@
+platform :ios, '14.0'
+
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve("react-native/scripts/react_native_pods.rb", {paths: [process.argv[1]]})', __dir__]).strip
 
-platform :ios, '14.0'
+
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -29,10 +31,8 @@ target 'StudentWork' do
 
     # ⛏️ Force iOS 14.0 op RNScreens
     installer.pods_project.targets.each do |target|
-      if target.name == 'RNScreens'
-        target.build_configurations.each do |config|
-          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
-        end
+      target.build_configurations.each do |config|
+      	config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
       end
     end
   end
